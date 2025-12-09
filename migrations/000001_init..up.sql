@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS users(
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    surname TEXT
+)
+
+CREATE TABLE IF NOT EXISTS subscriptions(
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE RESTRICT,
+    service TEXT,
+    price NUMERIC,
+    start_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    end_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+)
