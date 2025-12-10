@@ -62,3 +62,12 @@ func (ur *UserRepo) GetAllUsers() ([]*domain.User, error) {
 
 	return users, nil
 }
+
+func (ur *UserRepo) UpdateUserById(id uint64, name string, surname string) (*domain.User, error) {
+	var u domain.User
+	err := ur.db.QueryRow("UPDATE users SET name=$1, surname=$2 WHERE id=$3 RETURNING id, name, surname", name, surname, id).Scan(&u.Id, &u.Name, &u.Surname)
+	if err != nil {
+		return nil, err
+	}
+	return &u, nil
+}

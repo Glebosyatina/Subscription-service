@@ -12,6 +12,7 @@ type UserRepository interface {
 	GetUserById(id uint64) (*domain.User, error)
 	GetAllUsers() ([]*domain.User, error)
 	DeleteUserById(id uint64) error
+	UpdateUserById(id uint64, name string, surname string) (*domain.User, error)
 }
 
 // юзер сервис
@@ -62,4 +63,12 @@ func (s *UserService) GetUsers() ([]*domain.User, error) {
 		return nil, err
 	}
 	return users, nil
+}
+
+func (s *UserService) UpdateUser(id uint64, name string, surname string) (*domain.User, error) {
+	u, err := s.userRepo.UpdateUserById(id, name, surname)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }

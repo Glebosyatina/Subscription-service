@@ -35,6 +35,7 @@ func (h *Handler) InitRoutes() *mux.Router {
 	users.HandleFunc("/{id}", h.GetUser).Methods("GET")
 	users.HandleFunc("/", h.GetUsers).Methods("GET")
 	users.HandleFunc("/rm/{id}", h.DelUser).Methods("DELETE")
+	users.HandleFunc("/update/{id}", h.UpdateUser).Methods("PUT")
 
 	return r
 }

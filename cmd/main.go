@@ -45,7 +45,6 @@ func main() {
 		logger.Error("Не удалось создать конфиг бд", err.Error())
 		os.Exit(1)
 	}
-	//миграции
 
 	userRepo := repository.NewUserRepo(db)
 
