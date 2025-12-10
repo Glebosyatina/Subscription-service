@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     name TEXT,
     surname TEXT
-)
+);
 
 CREATE TABLE IF NOT EXISTS subscriptions(
     id SERIAL PRIMARY KEY,
@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS subscriptions(
     price NUMERIC,
     start_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     end_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-)
+);

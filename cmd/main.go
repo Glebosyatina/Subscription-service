@@ -9,9 +9,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 
@@ -41,7 +38,7 @@ func main() {
 		Port:    os.Getenv("POSTGRES_PORT"),
 		User:    os.Getenv("POSTGRES_USER"),
 		Passwd:  os.Getenv("POSTGRES_PASSWORD"),
-		DBName:  os.Getenv("DB_NAME"),
+		DBName:  os.Getenv("POSTGRES_DB"),
 		SSLMode: os.Getenv("DB_SSL"),
 	}, logger)
 	if err != nil {
@@ -49,32 +46,6 @@ func main() {
 		os.Exit(1)
 	}
 	//миграции
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
-	if err != nil {
-		logger.Error("Ошибка при создании драйвера для миграций", err.Error())
-		os.Exit(1)
-	}
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://migrations",
-		"postgres", driver)
-	if err != nil {
-		logger.Error("Ошибка при создании инстанса бд для миграций")
-		os.Exit(1)
-	}
-
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-		logger.Error("Ошибка при миграции", slog.Any("error", err))
-		os.Exit(1)
-	}
-	defer m.Close()
-
-	defer func() {
-		if err := db.Close(); err != nil {
-			logger.Error("Ошибка при закрытии соединения с бд", err)
-		} else {
-			logger.Info("Соединение с бд успешно закрыто")
-		}
-	}()
 
 	userRepo := repository.NewUserRepo(db)
 

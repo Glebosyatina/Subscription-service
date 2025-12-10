@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log/slog"
 )
 
@@ -15,8 +16,8 @@ type Config struct {
 }
 
 func NewDB(cfg Config, logger *slog.Logger) (*sql.DB, error) {
-	//connstr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=%s", cfg.User, cfg.Passwd, cfg.DBName, cfg.SSLMode)
-	connstr := "user=test password=test dbname=test sslmode=disable"
+	connstr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=%s", cfg.User, cfg.Passwd, cfg.DBName, cfg.SSLMode)
+	//connstr := "user=test password=test dbname=test sslmode=disable"
 	db, err := sql.Open("postgres", connstr)
 	if err != nil {
 		return nil, err
