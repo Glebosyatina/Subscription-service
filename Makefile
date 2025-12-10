@@ -1,5 +1,8 @@
 include .env
 
+run:
+	go run ./cmd/main.go
+
 create_migration:
 	migrate create -ext=sql -dir=migrations -seq init
 
@@ -9,4 +12,5 @@ migrate_up:
 migrate_down:
 	migrate -path=migrations -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" -verbose down
 
-.PHONY: create_migration migrate_up migrate_down
+
+.PHONY: create_migration migrate_up migrate_down run

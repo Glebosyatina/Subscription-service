@@ -33,7 +33,8 @@ func (h *Handler) InitRoutes() *mux.Router {
 	users := r.PathPrefix("/users").Subrouter()
 	users.HandleFunc("/add", h.CreateUser).Methods("POST")
 	users.HandleFunc("/{id}", h.GetUser).Methods("GET")
-	users.HandleFunc("/rm/{id}", h.DelUser).Methods("GET")
+	users.HandleFunc("/", h.GetUsers).Methods("GET")
+	users.HandleFunc("/rm/{id}", h.DelUser).Methods("DELETE")
 
 	return r
 }

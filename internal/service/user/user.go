@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	CreateUser(name string, surname string) (*domain.User, error)
 	GetUserById(id uint64) (*domain.User, error)
+	GetAllUsers() ([]*domain.User, error)
 	DeleteUserById(id uint64) error
 }
 
@@ -35,4 +36,30 @@ func (s *UserService) AddUser(name string, surname string) (*domain.User, error)
 
 	s.lg.Info("User created:", slog.String("name", name), slog.String("surname", surname))
 	return user, nil
+}
+
+func (s *UserService) GetUser(id uint64) (*domain.User, error) {
+	user, err := s.userRepo.GetUserById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *UserService) DeleteUser(id uint64) error {
+	err := s.userRepo.DeleteUserById(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *UserService) GetUsers() ([]*domain.User, error) {
+
+	users, err := s.userRepo.GetAllUsers()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
