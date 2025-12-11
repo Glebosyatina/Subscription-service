@@ -31,7 +31,7 @@ func NewUserService(ur UserRepository, logger *slog.Logger) *UserService {
 func (s *UserService) AddUser(name string, surname string) (*domain.User, error) {
 	user, err := s.userRepo.CreateUser(name, surname)
 	if err != nil {
-		s.lg.Error("Не удалось создать пользователся в бд", err)
+		s.lg.Error("Не удалось создать пользователся в бд", slog.Any("error", err))
 		return nil, err
 	}
 
@@ -42,6 +42,7 @@ func (s *UserService) AddUser(name string, surname string) (*domain.User, error)
 func (s *UserService) GetUser(id uint64) (*domain.User, error) {
 	user, err := s.userRepo.GetUserById(id)
 	if err != nil {
+		s.lg.Error("Ошибка при получении пользователя")
 		return nil, err
 	}
 
@@ -51,6 +52,7 @@ func (s *UserService) GetUser(id uint64) (*domain.User, error) {
 func (s *UserService) DeleteUser(id uint64) error {
 	err := s.userRepo.DeleteUserById(id)
 	if err != nil {
+		s.lg.Error("Ошибка при удалении пользователя")
 		return err
 	}
 	return nil
@@ -60,6 +62,7 @@ func (s *UserService) GetUsers() ([]*domain.User, error) {
 
 	users, err := s.userRepo.GetAllUsers()
 	if err != nil {
+		s.lg.Error("Ошибка при получении списка пользователей")
 		return nil, err
 	}
 	return users, nil
@@ -68,6 +71,7 @@ func (s *UserService) GetUsers() ([]*domain.User, error) {
 func (s *UserService) UpdateUser(id uint64, name string, surname string) (*domain.User, error) {
 	u, err := s.userRepo.UpdateUserById(id, name, surname)
 	if err != nil {
+		s.lg.Error("Ошибка обновления пользователя")
 		return nil, err
 	}
 	return u, nil

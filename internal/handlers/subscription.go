@@ -1,26 +1,71 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"glebosyatina/test_project/internal/domain"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
 func (h *Handler) CreateSub(w http.ResponseWriter, r *http.Request) {
+
+	var sub domain.Sub
+	if err := json.NewDecoder(r.Body).Decode(&sub); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Неверное тело запроса")
+		return
+	}
+
+	s, err := h.services.SubService.AddSub(sub.UserId, sub.NameService, sub.Price, sub.Start, sub.End)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Не удалось добавить подписку")
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	//fmt.Fprintf(w, "OK")
-	w.Write([]byte("OK"))
+	json.NewEncoder(w).Encode(s)
 }
 
 func (h *Handler) GetSub(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r) //мапа с query параметрами
+	subId, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Неверный id в строке запроса")
+		return
+	}
+
+	sub, err := h.services.SubService.GetSubscription(uint64(subId))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Не удалось получить подписку")
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Sub: ", vars["id"])
+	json.NewEncoder(w).Encode(sub)
 }
 
 func (h *Handler) DelSub(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	subId, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Неверный id в строке запроса")
+		return
+	}
+
+	err = h.services.SubService.DeleteSubByID(uint64(subId))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Не удалось удалить подписку")
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Rm Sub: ", vars["id"])
+	fmt.Fprintf(w, "Удалена подписка: %d", subId)
 }

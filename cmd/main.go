@@ -15,6 +15,7 @@ import (
 	"glebosyatina/test_project/internal/handlers"
 	"glebosyatina/test_project/internal/repository"
 	"glebosyatina/test_project/internal/service"
+	"glebosyatina/test_project/internal/service/sub"
 	"glebosyatina/test_project/internal/service/user"
 	"glebosyatina/test_project/pkg/database"
 	"glebosyatina/test_project/server"
@@ -42,16 +43,18 @@ func main() {
 		SSLMode: os.Getenv("DB_SSL"),
 	}, logger)
 	if err != nil {
-		logger.Error("Не удалось создать конфиг бд", err.Error())
+		logger.Error("Не удалось создать конфиг бд", slog.Any("error", err))
 		os.Exit(1)
 	}
 
 	userRepo := repository.NewUserRepo(db)
+	subRepo := repository.NewSubRepo(db)
 
 	//инициализация сервисов (уровень бизнесс логики)
 
 	services := &service.Services{
 		UserService: user.NewUserService(userRepo, logger),
+		SubService:  sub.NewSubService(subRepo, logger),
 	}
 
 	//инициализация мультиплексора(в аргументах передаем сервисы и логгер)
@@ -70,6 +73,7 @@ func main() {
 		}
 	}()
 
+	//блокируемся пока в какой нибудь из каналов что нибудь не придет
 	select {
 	case <-c:
 		logger.Info("Gracefull shutdown")

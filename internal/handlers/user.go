@@ -27,7 +27,6 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	//fmt.Fprintf(w, "create user")
 	json.NewEncoder(w).Encode(u)
 }
 
