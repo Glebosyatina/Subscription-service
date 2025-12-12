@@ -1,0 +1,11 @@
+curl -X POST localhost:8080/users/add -d '{"name":"Marina", "surname":"Ozerinnikova"}'   --- add user
+curl -X GET localhost:8080/users/{id}   --- get user
+curl -X DELETE localhost:8080/users/rm/{id}    --- rm user
+curl -X PUT localhost:8080/users/update/{id}   --- update user
+curl -X GET localhost:8080/users/              --- get all users
+
+curl -X POST localhost:8080/sub/add -d '{}'   --- add subscription
+curl -X GET localhost:8080/sub/{id}           --- get subscription
+curl -X DELETE localhost:8080/sub/rm/{id}     --- rm subscription
+curl -X GET localhost:8080/sub/               --- get all subscriptions
+curl -X PUT localhost:8080/sub/update/{id}    --- update subscription

@@ -47,8 +47,6 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(*u)
-	//w.WriteHeader(http.StatusOK)
-	//fmt.Fprintf(w, "user:", vars["id"])
 }
 
 func (h *Handler) DelUser(w http.ResponseWriter, r *http.Request) {

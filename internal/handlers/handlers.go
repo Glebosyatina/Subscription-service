@@ -28,7 +28,9 @@ func (h *Handler) InitRoutes() *mux.Router {
 	subs := r.PathPrefix("/sub").Subrouter()
 	subs.HandleFunc("/add", h.CreateSub).Methods("POST")
 	subs.HandleFunc("/{id}", h.GetSub).Methods("GET")
+	subs.HandleFunc("/", h.GetSubs).Methods("GET")
 	subs.HandleFunc("/rm/{id}", h.DelSub).Methods("DELETE")
+	subs.HandleFunc("/update/{id}", h.UpdateSub).Methods("PUT")
 
 	users := r.PathPrefix("/users").Subrouter()
 	users.HandleFunc("/add", h.CreateUser).Methods("POST")

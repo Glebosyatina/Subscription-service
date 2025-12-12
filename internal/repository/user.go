@@ -37,7 +37,7 @@ func (ur *UserRepo) GetUserById(id uint64) (*domain.User, error) {
 	return &user, nil
 }
 func (ur *UserRepo) DeleteUserById(id uint64) error {
-	if _, err := ur.db.Exec("DELETE FROM users WHERE id=$1", id); err != nil {
+	if _, err := ur.db.Exec("DELETE FROM users WHERE id=$1 RETURNING id", id); err != nil {
 		return err
 	}
 	return nil

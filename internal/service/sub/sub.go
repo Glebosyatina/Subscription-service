@@ -10,7 +10,9 @@ import (
 type SubRepository interface {
 	CreateSub(userId uint64, nameService string, price uint64, startDate string, endDate string) (*domain.Sub, error)
 	GetSubByID(idSub uint64) (*domain.Sub, error)
+	GetSubscriptions() ([]*domain.Sub, error)
 	DeleteSubByID(idSub uint64) error
+	UpdateSub(idSub uint64, userId uint64, nameService string, price uint64, start string, end string) (*domain.Sub, error)
 }
 
 type SubService struct {
@@ -43,10 +45,29 @@ func (s *SubService) GetSubscription(subId uint64) (*domain.Sub, error) {
 	return sub, nil
 }
 
+func (s *SubService) GetSubs() ([]*domain.Sub, error) {
+
+	subs, err := s.subRepo.GetSubscriptions()
+	if err != nil {
+		return nil, err
+	}
+
+	return subs, nil
+}
+
 func (s *SubService) DeleteSubByID(subId uint64) error {
 	err := s.subRepo.DeleteSubByID(subId)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *SubService) UpdateSub(idSub uint64, userId uint64, nameService string, price uint64, start string, end string) (*domain.Sub, error) {
+	sub, err := s.subRepo.UpdateSub(idSub, userId, nameService, price, start, end)
+	if err != nil {
+		return nil, err
+	}
+
+	return sub, nil
 }
