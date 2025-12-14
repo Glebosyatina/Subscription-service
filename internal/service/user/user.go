@@ -46,6 +46,7 @@ func (s *UserService) GetUser(id uint64) (*domain.User, error) {
 		return nil, err
 	}
 
+	s.lg.Info("Get user info:", slog.String("id", id))
 	return user, nil
 }
 
@@ -55,6 +56,8 @@ func (s *UserService) DeleteUser(id uint64) error {
 		s.lg.Error("Ошибка при удалении пользователя")
 		return err
 	}
+	
+	s.lg.Info("User deleted:", slog.String("id", id))
 	return nil
 }
 
@@ -65,6 +68,8 @@ func (s *UserService) GetUsers() ([]*domain.User, error) {
 		s.lg.Error("Ошибка при получении списка пользователей")
 		return nil, err
 	}
+
+	s.lg.Info("Get info about users")
 	return users, nil
 }
 
@@ -74,5 +79,7 @@ func (s *UserService) UpdateUser(id uint64, name string, surname string) (*domai
 		s.lg.Error("Ошибка обновления пользователя")
 		return nil, err
 	}
+
+	s.lg.Info("User updated:", slog.String("id", id))
 	return u, nil
 }
