@@ -2,6 +2,8 @@ package user
 
 import (
 	"log/slog"
+	"strconv"
+
 
 	"glebosyatina/test_project/internal/domain"
 )
@@ -46,7 +48,7 @@ func (s *UserService) GetUser(id uint64) (*domain.User, error) {
 		return nil, err
 	}
 
-	s.lg.Info("Get user info:", slog.String("id", id))
+	s.lg.Info("Get user info:", slog.String("id", strconv.Itoa(int(id))))
 	return user, nil
 }
 
@@ -57,7 +59,7 @@ func (s *UserService) DeleteUser(id uint64) error {
 		return err
 	}
 	
-	s.lg.Info("User deleted:", slog.String("id", id))
+	s.lg.Info("User deleted:", slog.String("id", strconv.Itoa(int(id))))
 	return nil
 }
 
@@ -80,6 +82,6 @@ func (s *UserService) UpdateUser(id uint64, name string, surname string) (*domai
 		return nil, err
 	}
 
-	s.lg.Info("User updated:", slog.String("id", id))
+	s.lg.Info("User updated:", slog.String("id", strconv.Itoa(int(id))))
 	return u, nil
 }

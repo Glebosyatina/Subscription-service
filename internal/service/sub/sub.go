@@ -43,7 +43,7 @@ func (s *SubService) GetSubscription(subId uint64) (*domain.Sub, error) {
 		return nil, err
 	}
 
-	s.lg.Info("Get subscription info:", slog.String("id", subId))
+	s.lg.Info("Get subscription info:", slog.String("id", strconv.Itoa(int(subId))))
 	return sub, nil
 }
 
@@ -64,7 +64,7 @@ func (s *SubService) DeleteSubByID(subId uint64) error {
 		return err
 	}
 	
-	s.lg.Info("Subscription was deleted:", slog.String("id", subId))
+	s.lg.Info("Subscription was deleted:", slog.String("id", strconv.Itoa(int(subId))))
 	return nil
 }
 
@@ -74,6 +74,6 @@ func (s *SubService) UpdateSub(idSub uint64, userId uint64, nameService string, 
 		return nil, err
 	}
 
-	s.lg.Info("Subscription was updated:", slog.String("id", idSub))
+	s.lg.Info("Subscription was updated:", slog.String("id", strconv.Itoa(int(idSub))))
 	return sub, nil
 }
