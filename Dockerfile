@@ -5,6 +5,7 @@ RUN echo "deb https://packagecloud.io/golang-migrate/migrate/debian/ bookworm ma
 RUN cat /etc/apt/sources.list.d/migrate.list
 RUN apt-get update
 RUN apt-get install migrate
+RUN apt-get install netcat-openbsd
 
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -13,7 +14,10 @@ COPY . .
 
 RUN go build -o main ./cmd/main.go
 
-RUN make migrate_up
+#RUN make migrate_up
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
 
 EXPOSE 8080
-CMD ["./main"]
+ENTRYPOINT ["./entrypoint.sh"]
