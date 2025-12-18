@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"log/slog"
+	"net/http"
 
 	"github.com/gorilla/mux"
 
 	"glebosyatina/test_project/internal/service"
+	"glebosyatina/test_project/internal/handlers/middleware"
 )
 
 // слой обработки запросов, в качестве зависимостей включает слой service и логгер
@@ -21,7 +23,7 @@ func NewHandler(servs *service.Services, logg *slog.Logger) *Handler {
 	}
 }
 
-func (h *Handler) InitRoutes() *mux.Router {
+func (h *Handler) InitRoutes() http.Handler {
 
 	r := mux.NewRouter()
 
@@ -39,5 +41,10 @@ func (h *Handler) InitRoutes() *mux.Router {
 	users.HandleFunc("/rm/{id}", h.DelUser).Methods("DELETE")
 	users.HandleFunc("/update/{id}", h.UpdateUser).Methods("PUT")
 
-	return r
+	//global middleware
+	handler := middleware.Logging(r)
+	
+	return handler
 }
+
+
